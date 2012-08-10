@@ -28,9 +28,9 @@ class ReMo(callbacks.Plugin):
         b = StringIO.StringIO()
         c.setopt(pycurl.WRITEFUNCTION, b.write)
         if display_name:
-            c.setopt(pycurl.URL, "https://reps.mozilla.org/api/v1/rep/?profile__display_name=" + name)
+            c.setopt(pycurl.URL, "http://reps.mozilla.org/api/v1/rep/?profile__display_name=" + name)
         else:
-            c.setopt(pycurl.URL, "https://reps.mozilla.org/api/v1/rep/?profile__irc_name=" + name)
+            c.setopt(pycurl.URL, "http://reps.mozilla.org/api/v1/rep/?profile__irc_name=" + name)
         c.perform()
         return b.getvalue()
 
