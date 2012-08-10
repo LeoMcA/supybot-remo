@@ -13,9 +13,9 @@ import supybot.callbacks as callbacks
 import pycurl
 import StringIO
 try:
-    import json
-except ImportError:
     import simplejson as json
+except ImportError:
+    import json
 
 
 class ReMo(callbacks.Plugin):
