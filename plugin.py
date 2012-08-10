@@ -12,7 +12,10 @@ import supybot.ircutils as ircutils
 import supybot.callbacks as callbacks
 import pycurl
 import StringIO
-import json
+try:
+    import json
+except ImportError:
+    import simplejson as json
 
 
 class ReMo(callbacks.Plugin):
