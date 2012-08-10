@@ -53,7 +53,7 @@ class ReMo(callbacks.Plugin):
         rep = self._lookup(name)
         if rep:
             profile = rep["profile"]
-            irc.reply(name + " is '" + rep["fullname"] + "'' " + profile["profile_url"])
+            irc.reply(name + " is '" + rep["fullname"] + "' " + profile["profile_url"])
         else:
             irc.reply("That Rep doesn't exist.")
     whois = wrap(whois, ["text"])
