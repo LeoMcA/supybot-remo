@@ -55,7 +55,7 @@ class ReMo(callbacks.Plugin):
             profile = rep["profile"]
             irc.reply(name + " is '" + rep["fullname"] + "' " + profile["profile_url"])
         else:
-            irc.reply("That Rep doesn't exist.")
+            irc.reply("I don't recognise that Rep.")
     whois = wrap(whois, ["text"])
 
     def mentor(self, irc, msg, args, name):
@@ -68,7 +68,7 @@ class ReMo(callbacks.Plugin):
             profile = rep["profile"]
             irc.reply(rep["first_name"] + "'s mentor is '")
         else:
-            irc.reply("That Rep doesn't exist.")
+            irc.reply("I don't recognise that Rep.")
     #mentor = wrap(mentor, ["text"])
 
 Class = ReMo
