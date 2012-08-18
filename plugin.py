@@ -31,6 +31,7 @@ def curl(rep, query):
     return b.getvalue()
 
 def rep_lookup(attribute):
+    attribute = urllib.quote_plus(attribute)
     res = json.loads(curl(1, "profile__" + attribute))
     if res["meta"]["total_count"] == 0:
         return 0
@@ -38,7 +39,6 @@ def rep_lookup(attribute):
         return res["objects"]
 
 def rep_lookup_by_name(name):
-    name = urllib.quote_plus(name)
     reps = rep_lookup("display_name=" + name)
     if reps:
         return reps
@@ -51,7 +51,6 @@ def rep_lookup_by_name(name):
 
 
 def rep_lookup_by_place(place):
-    place = urllib.quote_plus(place)
     reps = rep_lookup("country=" + place)
     if reps:
         return reps
