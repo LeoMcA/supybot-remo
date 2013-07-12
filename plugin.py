@@ -10,6 +10,7 @@ import supybot.ircutils as ircutils
 import supybot.callbacks as callbacks
 import pycurl
 import StringIO
+import urllib
 try:
     import simplejson as json
 except ImportError:
@@ -25,11 +26,15 @@ def curl(query):
     return b.getvalue()
 
 def rep_lookup(attribute):
+    attribute = urllib.quote_plus(attribute, '=')
     res = json.loads(curl(attribute))
     if res["meta"]["total_count"] == 0:
         return 0
     else:
         return res["objects"]
+
+def whois_reply(rep, query, irc):
+    irc.reply(query + " is " + rep["fullname"] + ": " + rep["profile"]["profile_url"])
 
 class ReMo(callbacks.Plugin):
     """Add the help for "@plugin help ReMo" here
@@ -40,18 +45,22 @@ class ReMo(callbacks.Plugin):
         self.__parent = super(ReMo, self)
         self.__parent.__init__(irc)
 
-    def whois(self, irc, msg, args, nick):
-        """<nick>
+    def whois(self, irc, msg, args, query):
+        """<query>
 
-        Displays a Rep's full nick and a link to their profile. <nick> can either be a ReMo portal username or an IRC nick."""
+        Displays a Rep's full name and a link to their profile. <query> can be an IRC nick or ReMo Portal username."""
 
-        reps = rep_lookup("profile__irc_name=" + nick)
+        reps = rep_lookup("profile__irc_name=" + query)
         if reps:
             rep = reps[0]
-            profile = rep["profile"]
-            irc.reply(profile["irc_name"] + " is " + rep["fullname"] + ": " + profile["profile_url"])
+            whois_reply(rep, query, irc)
         else:
-            irc.reply("Sorry, I don't recognise that Rep. :(")
+            reps = rep_lookup("profile__display_name=" + query)
+            if reps:
+                rep = reps[0]
+                whois_reply(rep, query, irc)
+            else:
+                irc.reply("Sorry, I can't find that Rep. :(")
     whois = wrap(whois, ["text"])
 
 Class = ReMo
